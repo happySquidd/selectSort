@@ -10,11 +10,12 @@ import (
 	"time"
 )
 
-func selectSort(arr []int, speed int) {
+func selectSort(arr []int, speed int) bool {
 	drawLines := *draw(arr)
 	importLines := []string{}
 	var maxLenStr float64
 	fmt.Println(arr)
+	runAgain := "n"
 
 	fmt.Println("Randomly generated array:")
 	fmt.Println()
@@ -60,7 +61,15 @@ func selectSort(arr []int, speed int) {
 		}
 	}
 	fmt.Println(arr)
-	fmt.Print("Sort complete.")
+	fmt.Println("Sort complete.")
+	println()
+	fmt.Printf("Want to sort again?(y/n): ")
+	fmt.Scan(&runAgain)
+	if runAgain == "y" {
+		return true
+	}
+	return false
+
 }
 
 func waitForUser() {
@@ -102,16 +111,23 @@ func draw(arr []int) *[]string {
 }
 
 func main() {
-	var arrLen int
-	var speed int
 	fmt.Println("This is a visual representation of a selection sorting algorithm")
+
+	arrLen, speed := displayGetInfo()
+
+	for selectSort(randArray(arrLen), speed) {
+		arrLen, speed = displayGetInfo()
+	}
+}
+
+func displayGetInfo() (arrLen int, speed int) {
 	fmt.Printf("Enter array length you want to sort: ")
 	fmt.Scan(&arrLen)
 	fmt.Printf("Set speed (1-fast, 2-medium, 3-slow): ")
 	fmt.Scan(&speed)
 	speed = setSpeed(speed)
 
-	selectSort(randArray(arrLen), speed)
+	return arrLen, speed
 }
 
 func randArray(arrLen int) []int {
